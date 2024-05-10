@@ -17,7 +17,7 @@ export const getAllProducts: (searchName?: string) => Promise<ProductT[]> = (sea
         price: item.price,
         imagePreview: item.imagePreview
       })));
-    }, 100);
+    }, 1000);
   });
 }
 
@@ -26,6 +26,22 @@ export const getProductById: (productId: string) => Promise<ProductFullT | undef
     setTimeout(() => {
       resolve(
         allProductData.find((item: ProductFullT) => item.id === productId)
+      );
+    }, 1000);
+  });
+}
+
+export const addProduct: (product: Omit<ProductFullT, 'id' | 'imagePreview' | 'imageFull'>) => Promise<number> = (product) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      allProductData.unshift({
+        ...product,
+        id: `${Date.now()}`,
+        imagePreview: `https://placehold.co/120x120/orange/white?text=${product.name.substring(0, 5)}`,
+        imageFull: `https://placehold.co/600x600/orange/white?text=${product.name.substring(0, 10)}+image`
+      })
+      resolve(
+        200
       );
     }, 1000);
   });
