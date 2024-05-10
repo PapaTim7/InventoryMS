@@ -30,7 +30,7 @@ export function ProductForm() {
   const params = useParams();
 
   const handleGoBackClick = () => {
-    navigate("../");
+    navigate("/products");
   };
 
   const handleCloseSnackbar = () => {
@@ -75,7 +75,7 @@ export function ProductForm() {
           setIsSuccessSnackbarOpened(true);
           setTimeout(() => {
             setIsSubmitting(false);
-            navigate("../");
+            navigate("/products");
           }, 1000);
         }
       })
