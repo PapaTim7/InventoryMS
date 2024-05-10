@@ -19,4 +19,19 @@ export const productSchema = z.object({
   ...rest
 }))
 
+export const productUpdateDataSchema = z
+  .object({
+    name: z.string(),
+    condition: z.string(),
+    descriptionShort: z.string(),
+    price: z.number(),
+    quantity: z.number(),
+    descriptionFull: z.string()
+  })
+  .transform(({ price, quantity, ...rest }) => ({
+    price: `${price}`,
+    quantity: `${quantity}`,
+    ...rest
+  }))
+
 export type ProductSchemaValues = z.infer<typeof productSchema>

@@ -1,4 +1,5 @@
-import { SkeletonProps, TextFieldProps } from "@mui/material";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { TextFieldProps } from "@mui/material";
 import {
   Control,
   ControllerProps,
@@ -19,6 +20,4 @@ export type SelectFieldPropsT<T extends FieldValues> = Omit<
   objectOnChange?: boolean;
   onChange?: (value: any) => void;
   control?: Control<T>;
-  isLoading?: boolean;
-  skeletonProps?: SkeletonProps;
 };
