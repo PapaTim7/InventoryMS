@@ -33,12 +33,12 @@ export function ProductList() {
   const navigate = useNavigate();
 
   const handleAddNewClick = () => {
-    navigate("new");
+    navigate("/products/new");
   };
 
   const handleGoToEditClick = useCallback(() => {
     if (selectedProduct) {
-      navigate(`${selectedProduct.id}`);
+      navigate(`/products/${selectedProduct.id}`);
     }
   }, [navigate, selectedProduct]);
 
