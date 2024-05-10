@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import { checkAuthLoader, checkAppLoader } from "./redirectLoaders";
-import { ProductList } from "@/app/product";
+import { ProductList, ProductForm } from "@/app/product";
 import { AuthWrapper, MainWrapper } from "@/wrappers";
 
 export const routes = [
   // AUTH
   {
+    errorElement: <>404 Not Found</>,
     path: "/",
     element: <AuthWrapper />,
     loader: checkAuthLoader(),
@@ -20,14 +21,16 @@ export const routes = [
 
   // MAIN
   {
+    errorElement: <>404 Not Found</>,
     path: "/",
     element: <MainWrapper />,
     children: [
       {
         path: "products",
         element: <ProductList />,
-        // loader: checkAppLoader(),
       },
+      { path: "products/new", element: <ProductForm /> },
+      { path: "products/:id", element: <ProductForm /> },
     ],
   },
 ];
