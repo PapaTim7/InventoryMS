@@ -15,11 +15,12 @@ import {
   ProductConditionZod,
   productSchema,
   ProductSchemaValues,
+  productUpdateDataSchema,
 } from "./schema";
 import { useForm } from "react-hook-form";
 import { InputField, SelectField } from "@/components";
-import { useState } from "react";
-import { addProduct } from "../api";
+import { useEffect, useState } from "react";
+import { addEditProduct, getProductById } from "../api";
 
 export function ProductForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,16 +41,35 @@ export function ProductForm() {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ProductSchemaValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {},
   });
 
+  useEffect(() => {
+    if (params?.id) {
+      setIsLoading(true);
+      getProductById(params.id)
+        .then((res) => {
+          reset(
+            productUpdateDataSchema.parse(res) as unknown as ProductSchemaValues
+          );
+        })
+        .catch(() => {
+          console.error("Something went wrong");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [params, reset]);
+
   const onSubmit = (values: ProductSchemaValues) => {
     setIsSubmitting(true);
     setIsLoading(true);
-    addProduct(values)
+    addEditProduct(values, params?.id)
       .then((res) => {
         if (res === 200) {
           setIsSuccessSnackbarOpened(true);
@@ -98,6 +118,7 @@ export function ProductForm() {
             error={errors.name}
             label="Name"
             registration={register("name")}
+            disabled={isLoading}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -106,6 +127,7 @@ export function ProductForm() {
             label="Price"
             type="number"
             registration={register("price")}
+            disabled={isLoading}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -114,6 +136,7 @@ export function ProductForm() {
             label="Quantity"
             type="number"
             registration={register("quantity")}
+            disabled={isLoading}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -121,6 +144,7 @@ export function ProductForm() {
             control={control}
             name="condition"
             label={"Condition"}
+            disabled={isLoading}
             options={Object.entries(ProductConditionZod.enum).map(
               ([item, id]) => ({
                 id,
@@ -134,6 +158,7 @@ export function ProductForm() {
             error={errors.descriptionShort}
             label="Short description"
             registration={register("descriptionShort")}
+            disabled={isLoading}
           />
         </Grid>
         <Grid item xs={12}>
@@ -143,6 +168,7 @@ export function ProductForm() {
             error={errors.descriptionFull}
             label="Full description"
             registration={register("descriptionFull")}
+            disabled={isLoading}
           />
         </Grid>
         <Grid item xs={12}>

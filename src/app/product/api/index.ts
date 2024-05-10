@@ -31,15 +31,26 @@ export const getProductById: (productId: string) => Promise<ProductFullT | undef
   });
 }
 
-export const addProduct: (product: Omit<ProductFullT, 'id' | 'imagePreview' | 'imageFull'>) => Promise<number> = (product) => {
+export const addEditProduct: (
+  product: Omit<ProductFullT, 'id' | 'imagePreview' | 'imageFull'>,
+  productId?: string
+) => Promise<number> = 
+(product, productId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      allProductData.unshift({
-        ...product,
-        id: `${Date.now()}`,
-        imagePreview: `https://placehold.co/120x120/orange/white?text=${product.name.substring(0, 5)}`,
-        imageFull: `https://placehold.co/600x600/orange/white?text=${product.name.substring(0, 10)}+image`
-      })
+      if (productId) {
+        // update
+        const index = allProductData.findIndex((item: ProductFullT) => item.id === productId);
+        allProductData[index] = {...allProductData[index], ...product}
+      } else {
+        // create
+        allProductData.unshift({
+          ...product,
+          id: `${Date.now()}`,
+          imagePreview: `https://placehold.co/120x120/orange/white?text=${product.name.substring(0, 5)}`,
+          imageFull: `https://placehold.co/600x600/orange/white?text=${product.name.substring(0, 10)}+image`
+        })
+      }
       resolve(
         200
       );

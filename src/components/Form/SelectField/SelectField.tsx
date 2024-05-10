@@ -1,4 +1,4 @@
-import { Box, MenuItem, Skeleton, TextField } from "@mui/material";
+import { Box, MenuItem, TextField } from "@mui/material";
 import { Controller, FieldValues } from "react-hook-form";
 import { SelectFieldPropsT } from "./SelectField.types";
 
@@ -10,14 +10,10 @@ export function SelectField<TFieldValues extends FieldValues>({
   label,
   options = [],
   control,
-  isLoading,
-  skeletonProps,
   onChange: onChangeProps,
   ...rest
 }: SelectFieldPropsT<TFieldValues>): JSX.Element {
-  return isLoading ? (
-    <Skeleton height={56} {...skeletonProps} />
-  ) : (
+  return (
     <Controller
       name={name}
       control={control}
