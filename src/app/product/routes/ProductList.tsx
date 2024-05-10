@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { ProductDetailsDialog } from "./common/ProductDetailsDialog";
 import { currencyFormatterUSD, debounce } from "@/utils";
-import { QuantityLabel } from "./common/QuantityLabel";
+import { ConditionLabel } from "./common/ConditionLabel";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 
@@ -163,9 +163,7 @@ export function ProductList() {
                         marginRight: 2,
                       }}
                     />
-                    <Box
-                      sx={{ maxWidth: "calc(100% - 140px)", paddingTop: 1.5 }}
-                    >
+                    <Box sx={{ maxWidth: "calc(100% - 140px)", paddingTop: 1 }}>
                       <Typography
                         variant="h5"
                         sx={{
@@ -179,7 +177,22 @@ export function ProductList() {
                       <Typography variant="h6">
                         {currencyFormatterUSD.format(item.price)}
                       </Typography>
-                      <QuantityLabel code={item.quantity} />
+                      <ConditionLabel code={item.condition} />
+                      <Stack
+                        sx={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Typography variant="body1">Quantity:</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            marginLeft: 0.5,
+                            marginRight: 1,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {item.quantity}
+                        </Typography>
+                      </Stack>
                     </Box>
                   </Stack>
                   <Typography variant="body1">
