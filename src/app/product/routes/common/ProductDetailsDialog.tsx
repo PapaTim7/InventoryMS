@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { ProductDetailsDialogPropsT } from "../Product.types";
 import { currencyFormatterUSD } from "@/utils";
-import { QuantityLabel } from "./QuantityLabel";
+import { ConditionLabel } from "./ConditionLabel";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, MouseEvent } from "react";
@@ -55,7 +55,7 @@ export function ProductDetailsDialog({
                 marginBottom: 2,
               }}
             >
-              {productDetails.name}
+              {`${productDetails.name} (x${productDetails.quantity})`}
             </Typography>
             <Box
               sx={{
@@ -70,7 +70,7 @@ export function ProductDetailsDialog({
             <Typography variant="h6" sx={{ marginY: 1 }}>
               {currencyFormatterUSD.format(productDetails.price)}
             </Typography>
-            <QuantityLabel code={productDetails.quantity} />
+            <ConditionLabel code={productDetails.condition} />
             <Typography variant="body1" sx={{ marginTop: 0.5 }}>
               {productDetails.descriptionFull}
             </Typography>

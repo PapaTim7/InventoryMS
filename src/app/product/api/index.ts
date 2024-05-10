@@ -12,6 +12,7 @@ export const getAllProducts: (searchName?: string) => Promise<ProductT[]> = (sea
         id: item.id,
         name: item.name,
         quantity: item.quantity,
+        condition: item.condition,
         descriptionShort: item.descriptionShort,
         price: item.price,
         imagePreview: item.imagePreview

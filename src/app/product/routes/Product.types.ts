@@ -1,11 +1,12 @@
-export type ProductQuantityT =  'high' | 'medium' | 'low';
+export type ProductConditionT =  'high' | 'medium' | 'low';
 
 export type ProductT = {
   id: string
   name: string
-  quantity: ProductQuantityT
+  condition: ProductConditionT
   descriptionShort: string
   price: number
+  quantity: number
   imagePreview: string
 }
 

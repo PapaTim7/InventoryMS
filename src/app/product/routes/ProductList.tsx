@@ -14,8 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import { ProductDetailsDialog } from "./common/ProductDetailsDialog";
-import { currencyFormatterUSD } from "@/utils";
-import { QuantityLabel } from "./common/QuantityLabel";
+import { currencyFormatterUSD, debounce } from "@/utils";
+import { ConditionLabel } from "./common/ConditionLabel";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 
 export function ProductList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +28,19 @@ export function ProductList() {
   >(undefined);
   const [isDeleteSnackbarOpened, setIsDeleteSnackbarOpened] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [searchRequest, setSearchRequest] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleAddNewClick = () => {
+    navigate("new");
+  };
+
+  const handleGoToEditClick = useCallback(() => {
+    if (selectedProduct) {
+      navigate(`${selectedProduct.id}`);
+    }
+  }, [navigate, selectedProduct]);
 
   const handleGetAllProducts = (searchName?: string) => {
     setIsLoading(true);
@@ -38,8 +53,8 @@ export function ProductList() {
 
   useEffect(() => {
     // initial
-    handleGetAllProducts(searchText);
-  }, [searchText]);
+    handleGetAllProducts(searchRequest);
+  }, [searchRequest]);
 
   const handleSelectProduct = (productId: string) => {
     setIsProductLoading(true);
@@ -48,7 +63,7 @@ export function ProductList() {
         if (res) {
           setSelectedProduct(res);
         } else {
-          // Here could Snackbar calling (something went wrong)
+          // Here could be a Snackbar calling (something went wrong)
         }
       })
       .finally(() => setIsProductLoading(false));
@@ -70,12 +85,23 @@ export function ProductList() {
           if (res === 200) {
             setIsDeleteSnackbarOpened(true);
             // re-fetch products
-            handleGetAllProducts();
+            handleGetAllProducts(searchRequest);
           }
         })
         .finally(() => setIsProductLoading(false));
     }
-  }, [selectedProduct]);
+  }, [selectedProduct, searchRequest]);
+
+  const debouncedSearchRequestParamUpdate = useCallback(
+    debounce((value: string) => {
+      setSearchRequest(value);
+    }, 500),
+    []
+  );
+
+  useEffect(() => {
+    debouncedSearchRequestParamUpdate(searchText);
+  }, [debouncedSearchRequestParamUpdate, searchText]);
 
   return (
     <Stack>
@@ -92,9 +118,24 @@ export function ProductList() {
           <CircularProgress size={100} />
         </Stack>
       ) : null}
-      <Typography variant="h3" sx={{ marginY: 3 }}>
-        Product List
-      </Typography>
+      <Stack
+        sx={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h3" sx={{ marginY: 3 }}>
+          Product List
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleAddNewClick}
+        >
+          Add New
+        </Button>
+      </Stack>
       <SearchInput
         onChangeText={setSearchText}
         value={searchText}
@@ -122,9 +163,7 @@ export function ProductList() {
                         marginRight: 2,
                       }}
                     />
-                    <Box
-                      sx={{ maxWidth: "calc(100% - 140px)", paddingTop: 1.5 }}
-                    >
+                    <Box sx={{ maxWidth: "calc(100% - 140px)", paddingTop: 1 }}>
                       <Typography
                         variant="h5"
                         sx={{
@@ -138,7 +177,22 @@ export function ProductList() {
                       <Typography variant="h6">
                         {currencyFormatterUSD.format(item.price)}
                       </Typography>
-                      <QuantityLabel code={item.quantity} />
+                      <ConditionLabel code={item.condition} />
+                      <Stack
+                        sx={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Typography variant="body1">Quantity:</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            marginLeft: 0.5,
+                            marginRight: 1,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {item.quantity}
+                        </Typography>
+                      </Stack>
                     </Box>
                   </Stack>
                   <Typography variant="body1">
@@ -166,7 +220,7 @@ export function ProductList() {
       <ProductDetailsDialog
         productDetails={selectedProduct}
         isDialogOpen={!!selectedProduct}
-        onActionClick={() => {}}
+        onActionClick={handleGoToEditClick}
         onDeleteClick={handleDeleteProduct}
         onClose={handleCloseProductDetails}
       />

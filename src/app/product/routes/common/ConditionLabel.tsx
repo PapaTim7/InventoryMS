@@ -1,20 +1,20 @@
 import { Stack, Typography } from "@mui/material";
-import { ProductQuantityT } from "../Product.types";
+import { ProductConditionT } from "../Product.types";
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 
-const quantityLabelsMap: Record<ProductQuantityT, JSX.Element> = {
+const conditionLabelsMap: Record<ProductConditionT, JSX.Element> = {
   high: <StarBorderPurple500Icon sx={{ color: "success.light" }} />,
   medium: <ThumbUpAltOutlinedIcon sx={{ color: "warning.light" }} />,
   low: <ThumbDownAltOutlinedIcon sx={{ color: "error.main" }} />,
 };
 
-type QuantityLabelPropsT = {
-  code: ProductQuantityT;
+type ConditionLabelPropsT = {
+  code: ProductConditionT;
 };
 
-export function QuantityLabel({ code }: QuantityLabelPropsT) {
+export function ConditionLabel({ code }: ConditionLabelPropsT) {
   return (
     <Stack
       sx={{
@@ -23,14 +23,14 @@ export function QuantityLabel({ code }: QuantityLabelPropsT) {
         flexDirection: "row",
       }}
     >
-      <Typography variant="body1">Quality:</Typography>
+      <Typography variant="body1">Condition:</Typography>
       <Typography
         variant="body1"
         sx={{ marginLeft: 0.5, marginRight: 1, fontWeight: "bold" }}
       >
         {code}
       </Typography>
-      {quantityLabelsMap[code]}
+      {conditionLabelsMap[code]}
     </Stack>
   );
 }
