@@ -1,7 +1,9 @@
+export type ProductQuantityT =  'high' | 'medium' | 'low';
+
 export type ProductT = {
   id: string
   name: string
-  quantity: 'high' | 'medium' | 'low'
+  quantity: ProductQuantityT
   descriptionShort: string
   price: number
   imagePreview: string
@@ -16,4 +18,6 @@ export type ProductDetailsDialogPropsT = {
   isDialogOpen: boolean
   onClose: () => void
   onActionClick: () => void
+  onDeleteClick: () => void
+  productDetails?: ProductFullT 
 }

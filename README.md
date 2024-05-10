@@ -3,7 +3,7 @@
 ## Simple interactive web (frontend) for an Inventory Management System
 
 
-The backend is mocked for example to retrieve data from a hardcoded pre-defined store. The UI allows users to perform the following operations:  
+The backend is mocked to retrieve data from a hardcoded pre-defined store. The UI allows users to perform the following operations:  
 
 - Add a new product to the inventory. 
 - Update the quantity of a product in the inventory. 
